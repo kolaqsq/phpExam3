@@ -13,7 +13,7 @@
 require 'database.php';
 $database = connect();
 $query_questions = $database->prepare("select * from questions where session_id = ?");
-$query_questions->execute([$_GET['session_id']]);
+$query_questions->execute([1]);
 $questions = $query_questions->rowCount();
 ?>
 <form action="" id="questions">
@@ -36,23 +36,26 @@ $questions = $query_questions->rowCount();
             '   </select>' .
 
             '   <br><label for="question_text' . $question['id'] . '">Текст вопроса: </label>' .
-            '   <textarea name="question_text' . $question['id'] . '" id="question_text' . $question['id'] . '"></textarea>' .
+            '   <textarea name="question_text' . $question['id'] . '" id="question_text' . $question['id'] . '"' .
+            '        >' . $question['question_text'] . '</textarea>' .
             '   <br><button type="button" onclick="addOption(this.id.substring(10))" id="add_option' . $question['id'] . '" style="display: none">Добавить вариант ответа</button>';
 
         $query_options = $database->prepare("select * from options where question_id = ?");
         $query_options->execute([$question['id']]);
         while ($option = $query_options->fetch()) {
             echo
-                '<div id="option' . $option['id'] . '_1" style="display: none">' .
+                '<div id="option' . $option['id'] . '_1">' .
                 '    <br><label for="option_text' . $option['id'] . '_' . $option['number_in_question'] .
-                        '">Вариант ответа №' . $option['number_in_question'] . ': </label>\n' .
+                        '">Вариант ответа №' . $option['number_in_question'] . ': </label>' .
 
                 '    <textarea name="option_text' . $option['id'] . '_' . $option['number_in_question'] .
-                        '" id="option_text' . $option['id'] . '_' . $option['number_in_question'] . '"></textarea>' .
+                        '" id="option_text' . $option['id'] . '_' . $option['number_in_question'] . '"' .
+                '          >' . $option['option_text'] . '</textarea>' .
 
-                '    <br><label for="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '">Баллы: </label>\n' .
+                '    <br><label for="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '">Баллы: </label>' .
                 '    <input type="number" min="-100" max="100" name="option_mark' . $option['id'] . '_' .
-                        $option['number_in_question'] . '" id="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '"">' .
+                        $option['number_in_question'] . '" id="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '"' .
+                '           value="' . $option['option_mark'] .'">' .
 
                 '    <br><button type="button" onclick="deleteOption(this.id.substring(13))" id="delete_option' .
                         $option['id'] . '_' . $option['number_in_question'] . '">Удалить</button>' .
