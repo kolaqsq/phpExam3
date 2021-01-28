@@ -14,7 +14,7 @@ require 'database.php';
 $database = connect();
 ?>
 <form action="" id="questions">
-    <button onclick = addQuestion()>Добавиь вопрос</button>
+    <button type="button" onclick="addQuestion('questions')">Добавиь вопрос</button>
 </form>
 </body>
 </html>
