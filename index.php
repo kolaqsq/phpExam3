@@ -2,11 +2,11 @@
 function passCheck($password, $data)
 {
     if ($password <> '') {
-        $result = mysqli_query($data, "select passwords from admins where passwords = '$password'");
-        $row = mysqli_fetch_assoc($result);
-        if (isset($row['passwords']))
-            if (($password === $row['passwords'])) {
-                header("Location: admin.php", true, 301);
+        $query = $data->query("select password from admin where password = '$password'");
+        $row = $query->fetch();
+        if (isset($row['password']))
+            if (($password === $row['password'])) {
+                header("Location: php/admin.php", true, 301);
                 exit();
             } else return null;
     } else return null;
@@ -25,6 +25,7 @@ function passCheck($password, $data)
 <body>
 <?php
 require 'php/database.php';
+
 try {
     $database = connect();
     if (!isset($_POST['password']))
@@ -40,8 +41,6 @@ try {
     echo '<br><span>Ошибка подключения к базе данных: ' . $e->getMessage() . '</span>';
 }
 $database = null;
-
-
 ?>
 </body>
 </html>
