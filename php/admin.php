@@ -75,7 +75,7 @@ function addSession($id, $data)
                     <td><a href="' . $row['url'] . '">' . $row['url'] . '</a></td>
                     <td>' . ($row['is_open'] ? 'Открыто' : 'Закрыто') . '</td>
                     <td>
-                        <a href="session.php?session_id=' .
+                        <a href="session.php?save=false&session_id=' .
                 $row['id'] .
                 '">Редактировать</a><span>  </span>
                         <a href="admin.php?session_id=' . $row['id'] .

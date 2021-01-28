@@ -1,3 +1,13 @@
+<?php
+function saveSession($id, $data)
+{
+    echo 'сохрание не работает';
+//    header("Location: session.php?save=false&session_id=" . $_GET['session_id'], true, 301);
+
+}
+
+?>
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -13,10 +23,13 @@
 require 'database.php';
 $database = connect();
 $query_questions = $database->prepare("select * from questions where session_id = ?");
-$query_questions->execute([1]);
+$query_questions->execute([$_GET['session_id']]);
 $questions = $query_questions->rowCount();
+
+if (isset($_GET['session_id']) && $_GET['save'] == 'true')
+    saveSession($_GET['session_id'], $database);
 ?>
-<form action="" id="questions">
+<form action="session.php?session_id=<?php echo $_GET['session_id'] ?>&save=true" method="post" id="questions">
     <button type="button" onclick="addQuestion('questions', <?php echo $questions + 1 ?>)">Добавиь вопрос</button>
     <?php
     while ($question = $query_questions->fetch()) {
@@ -46,55 +59,25 @@ $questions = $query_questions->rowCount();
             echo
                 '<div id="option' . $option['id'] . '_1">' .
                 '    <br><label for="option_text' . $option['id'] . '_' . $option['number_in_question'] .
-                        '">Вариант ответа №' . $option['number_in_question'] . ': </label>' .
+                '">Вариант ответа №' . $option['number_in_question'] . ': </label>' .
 
                 '    <textarea name="option_text' . $option['id'] . '_' . $option['number_in_question'] .
-                        '" id="option_text' . $option['id'] . '_' . $option['number_in_question'] . '"' .
+                '" id="option_text' . $option['id'] . '_' . $option['number_in_question'] . '"' .
                 '          >' . $option['option_text'] . '</textarea>' .
 
                 '    <br><label for="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '">Баллы: </label>' .
                 '    <input type="number" min="-100" max="100" name="option_mark' . $option['id'] . '_' .
-                        $option['number_in_question'] . '" id="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '"' .
-                '           value="' . $option['option_mark'] .'">' .
+                $option['number_in_question'] . '" id="option_mark' . $option['id'] . '_' . $option['number_in_question'] . '"' .
+                '           value="' . $option['option_mark'] . '">' .
 
                 '    <br><button type="button" onclick="deleteOption(this.id.substring(13))" id="delete_option' .
-                        $option['id'] . '_' . $option['number_in_question'] . '">Удалить</button>' .
+                $option['id'] . '_' . $option['number_in_question'] . '">Удалить</button>' .
                 '</div>';
         }
         echo '</div>';
     }
-
     ?>
+    <input type="submit" value="Сохранить">
 </form>
 </body>
 </html>
-
-<!--'   <br>-->
-<!--<button type="button" onclick="addOption(this.id.substring(10))" id="add_option' . i . '" style="display: none">Добавить-->
-<!--    вариант ответа-->
-<!--</button>' .-->
-<!---->
-<!--'-->
-<!--<div id="option' . i . '_1" style="display: none">' .-->
-<!--    ' <br><label for="option_text' . i . '_1">Вариант ответа №1: </label>\n' .-->
-<!--    ' <textarea name="option_text' . i . '_1" id="option_text' . i . '_1"></textarea>' .-->
-<!--    ' <br><label for="option_mark' . i . '_1">Баллы: </label>\n' .-->
-<!--    ' <input type="number" min="-100" max="100" name="option_mark' . i . '_1" id="option_mark' . i . '_1">' .-->
-<!--    ' <br>-->
-<!--    <button type="button" onclick="deleteOption(this.id.substring(13))" id="delete_option' . i . '_1">Удалить</button>-->
-<!--    ' .-->
-<!--    '-->
-<!--</div>' .-->
-<!---->
-<!--'-->
-<!--<div id="option' . i . '_2" style="display: none">' .-->
-<!--    ' <br><label for="option_text' . i . '_2">Вариант ответа №2: </label>\n' .-->
-<!--    ' <textarea name="option_text' . i . '_2" id="option_text' . i . '_2"></textarea>' .-->
-<!--    ' <br><label for="option_mark' . i . '_2">Баллы: </label>\n' .-->
-<!--    ' <input type="number" min="-100" max="100" name="option_mark' . i . '_2" id="option_mark' . i . '_2">' .-->
-<!--    ' <br>-->
-<!--    <button type="button" onclick="deleteOption(this.id.substring(13))" id="delete_option' . i . '_2">Удалить</button>-->
-<!--    ' .-->
-<!--    '-->
-<!--</div>' .-->
-<!--'</div>';-->
