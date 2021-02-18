@@ -27,6 +27,12 @@ function addSession($id, $data)
 {
     $query = $data->prepare("insert into session(id, is_open, url) values (?, ?, ?)");
     $query->execute([$id, true, 'form.php?session_id=' . $id]);
+
+    $max_id = $data->query("select max(id) from questions")->fetch();
+    $insert = $data->prepare("insert into questions
+                              values (?, ?, ?, ?, ?)");
+    $insert->execute([$max_id['max(id)'] + 1, $id, 1, 1, 'Первый вопрос']);
+
     header("Location: admin.php", true, 301);
     exit();
 }
@@ -40,6 +46,9 @@ function addSession($id, $data)
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Цифровые сессии. Администрирование</title>
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 <table>

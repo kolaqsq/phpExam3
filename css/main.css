@@ -1,0 +1,31 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 5%;
+}
+
+form {
+  width: 100%;
+}
+
+#questions {
+  width: 100%;
+}
+
+.question {
+  border: 1px solid black;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 2.5%;
+  width: 50%;
+}
+
+/*# sourceMappingURL=main.css.map */
